@@ -69,7 +69,7 @@
         </div>
         <?php endif; ?>
 
-        <button type="submit" class="btn-primary w-full rounded-lg py-2.5 text-sm font-semibold text-white mt-2">
+        <button name="submit" type="submit" class="btn-primary w-full rounded-lg py-2.5 text-sm font-semibold text-white mt-2">
           Se connecter
         </button>
 

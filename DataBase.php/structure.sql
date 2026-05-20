@@ -13,6 +13,7 @@ CREATE TABLE `users` (
   `name` VARCHAR(50)  NOT NULL,
   `email` VARCHAR(100)  NOT NULL,
   `password` VARCHAR(255)  NOT NULL,
+  `first_time` ENUM('0', '1') NOT NULL,
   `role_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`role_id`)
@@ -63,8 +64,8 @@ CREATE TABLE `reviews` (
   `id` INT AUTO_INCREMENT,
   `comment` TEXT,
   `rating` INT,
-  `help_quest_id` INT NOT NULL,
   `reviewer_id` INT NOT NULL,
+  `help_quest_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`reviewer_id`)
       REFERENCES `users`(`id`)
@@ -80,6 +81,8 @@ CREATE TABLE `help_requests` (
   `id` INT AUTO_INCREMENT,
   `title` VARCHAR(255),
   `description` TEXT,
+  `date_pub` DATETIME NOT NULL,
+  `date_session` DATETIME,
   `learner_id` INT NOT NULL,
   `tutor_id` INT,
   `skill_id` INT NOT NULL,
