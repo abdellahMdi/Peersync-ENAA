@@ -21,15 +21,18 @@
     .skill-tag.mastered { background:#6c63ff18; color:#a5a0ff; border-color:#6c63ff33; }
     .btn-primary { background:#6c63ff; transition:background 0.2s; }
     .btn-primary:hover { background:#5a52e0; }
-    .ticket-row:hover { background:#1f2233; }
+    .ticket-card:hover { background:#1f2233; border-color: #3a3d50; }
     .input-field { background:#0f1117; border:1px solid #2a2d3e; color:#e8e9f0; transition:border-color 0.2s; }
     .input-field:focus { outline:none; border-color:#6c63ff; }
     .input-field::placeholder { color:#4a4d60; }
+    
+    /* Smooth transitions for the notification panel */
+    #notification-dropdown { transition: opacity 0.15s ease, transform 0.15s ease; }
+    #notification-dropdown.hidden { display: none; opacity: 0; transform: translateY(10px); }
   </style>
 </head>
 <body class="flex min-h-screen">
 
-<!-- SIDEBAR -->
 <aside class="sidebar w-56 flex-shrink-0 flex flex-col fixed top-0 left-0 h-full z-20">
   <div class="p-5 flex items-center gap-2.5" style="border-bottom:1px solid #2a2d3e;">
     <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#6c63ff22;border:1px solid #6c63ff44;">
@@ -38,7 +41,7 @@
     <span class="font-bold text-sm tracking-tight">PeerSync</span>
   </div>
 
-  <nav class="flex-1 p-3 space-y-1">
+  <nav class="flex-1 p-3 space-y-1 relative">
     <a href="dashboard.php" class="nav-link active flex items-center gap-3 px-3 py-2 text-sm font-medium">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
       Dashboard
@@ -47,14 +50,49 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Mon Profil
     </a>
-    <a href="#" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9"/></svg>
-      Notifications
-      <span class="ml-auto mono text-xs rounded-full px-1.5 py-0.5" style="background:#ff4d4d22;color:#ff8080;">3</span>
-    </a>
+    
+    <div class="relative">
+      <button id="noti-toggle-btn" class="w-full nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-left">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9"/></svg>
+        Notifications
+        <span class="ml-auto mono text-xs rounded-full px-1.5 py-0.5" style="background:#ff4d4d22;color:#ff8080;">3</span>
+      </button>
+
+      <div id="notification-dropdown" class="hidden absolute left-full top-0 ml-2 w-80 card rounded-xl shadow-2xl z-30 overflow-hidden" onclick="event.stopPropagation()">
+        <div class="px-4 py-3 flex items-center justify-between" style="border-bottom: 1px solid #2a2d3e;">
+          <span class="font-semibold text-xs tracking-wide uppercase text-gray-400">Notifications</span>
+          <button class="text-[10px] text-indigo-400 hover:underline">Tout marquer comme lu</button>
+        </div>
+        <div class="max-h-72 overflow-y-auto divide-y divide-[#2a2d3e33]">
+          <div class="p-3.5 hover:background-[#2a2d3e22] transition-colors cursor-pointer flex gap-3 items-start">
+            <div class="w-2 h-2 mt-1.5 rounded-full bg-indigo-500 flex-shrink-0"></div>
+            <div>
+              <p class="text-xs text-gray-200 leading-normal"><strong>Younes A.</strong> a accepté votre demande d'aide sur <span class="text-indigo-300">"Jointures SQL"</span>.</p>
+              <span class="text-[10px] font-mono text-gray-500 block mt-1">Il y a 10 min</span>
+            </div>
+          </div>
+          <div class="p-3.5 hover:background-[#2a2d3e22] transition-colors cursor-pointer flex gap-3 items-start">
+            <div class="w-2 h-2 mt-1.5 rounded-full bg-indigo-500 flex-shrink-0"></div>
+            <div>
+              <p class="text-xs text-gray-200 leading-normal">Une nouvelle demande sur <span class="text-emerald-400">PHP</span> attend un tuteur.</p>
+              <span class="text-[10px] font-mono text-gray-500 block mt-1">Il y a 1 heure</span>
+            </div>
+          </div>
+          <div class="p-3.5 hover:background-[#2a2d3e22] transition-colors cursor-pointer flex gap-3 items-start">
+            <div class="w-2 h-2 mt-1.5 rounded-full bg-gray-600 flex-shrink-0"></div>
+            <div>
+              <p class="text-xs text-gray-400 leading-normal">Votre session d'entraide avec Fatima Z. a été marquée comme résolue.</p>
+              <span class="text-[10px] font-mono text-gray-500 block mt-1">Hier, à 18:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-2.5 text-center bg-[#0f111755]" style="border-top: 1px solid #2a2d3e;">
+          <a href="#" class="text-xs text-gray-400 hover:text-white font-medium inline-block w-full">Voir l'historique complet</a>
+        </div>
+      </div>
+      </div>
   </nav>
 
-  <!-- User info -->
   <div class="p-3" style="border-top:1px solid #2a2d3e;">
     <div class="flex items-center gap-3 px-2 py-2 rounded-lg" style="background:#2a2d3e33;">
       <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#6c63ff33;color:#a5a0ff;">
@@ -72,7 +110,6 @@
   </div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="flex-1 ml-56 p-8">
 
   <?php if (isset($_GET['success'])): ?>
@@ -89,7 +126,6 @@
   </div>
   <?php endif; ?>
 
-  <!-- Header -->
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-2xl font-bold">Tableau de bord</h1>
@@ -102,7 +138,6 @@
     </button>
   </div>
 
-  <!-- Stats -->
   <div class="grid grid-cols-3 gap-4 mb-8">
     <div class="card rounded-xl p-5">
       <p class="text-xs font-medium mb-2" style="color:#6b6e85;">En attente</p>
@@ -118,79 +153,77 @@
     </div>
   </div>
 
-  <!-- Ticket list -->
-  <div class="card rounded-2xl overflow-hidden">
-    <div class="flex items-center justify-between px-6 py-4" style="border-bottom:1px solid #2a2d3e;">
-      <h2 class="font-semibold text-sm">Demandes d'aide</h2>
-      <select class="input-field text-xs rounded-lg px-3 py-1.5">
-        <option>Toutes</option>
-        <option>En attente</option>
-        <option>Assignées</option>
-        <option>Résolues</option>
-      </select>
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-semibold text-lg">Demandes d'aide récentes</h2>
+    <select class="input-field text-xs rounded-lg px-3 py-1.5">
+      <option>Toutes</option>
+      <option>En attente</option>
+      <option>Assignées</option>
+      <option>Résolues</option>
+    </select>
+  </div>
+
+  <div class="space-y-4">
+    <?php
+    $demo = [
+      ['id'=>1,'titre'=>'Problème avec PDO et les transactions','description'=>'Je n\'arrive pas à faire un rollback correctement quand une de mes requêtes SQL échoue dans ma boucle foreach.','techno'=>'PHP','statut'=>'EN_ATTENTE','etudiant'=>'Khalid M.','id_student'=>10, 'date_creation'=>'Aujourd\'hui, à 14:32'],
+      ['id'=>2,'titre'=>'Comprendre les jointures SQL','description'=>'Besoin d\'explications claires sur la différence entre un LEFT JOIN et un INNER JOIN avec des exemples concrets de tables.','techno'=>'SQL','statut'=>'ASSIGNE','etudiant'=>'Sara B.','id_student'=>11, 'date_creation'=>'Hier, à 11:15'],
+      ['id'=>3,'titre'=>'Callback vs Promise en JS','description'=>'Bloqué sur l\'asynchronisme en JS. Je mélange les anciennes syntaxes de callbacks et les nouvelles promesses/async-await.','techno'=>'JavaScript','statut'=>'EN_ATTENTE','etudiant'=>'Amine L.','id_student'=>12, 'date_creation'=>'Le 18 Mai, à 17:40'],
+      ['id'=>4,'titre'=>'Héritage POO — méthodes abstraites','description'=>'Pourquoi utiliser une classe abstraite plutôt qu\'une interface en PHP ? Des exemples d\'application requis.','techno'=>'PHP','statut'=>'RESOLUE','etudiant'=>'Fatima Z.','id_student'=>13, 'date_creation'=>'Le 15 Mai, à 09:22'],
+      ['id'=>5,'titre'=>'Flexbox vs Grid CSS','description'=>'Quand est-il préférable d\'utiliser CSS Grid plutôt que Flexbox pour créer un layout de dashboard complexe ?','techno'=>'CSS','statut'=>'EN_ATTENTE','etudiant'=>'Karim D.','id_student'=>14, 'date_creation'=>'Le 14 Mai, à 16:05'],
+    ];
+    $tickets = $tickets ?? $demo;
+    foreach ($tickets as $t):
+      $statusClass = match($t['statut']) {
+        'EN_ATTENTE' => 'badge-wait', 'ASSIGNE' => 'badge-assign', default => 'badge-done'
+      };
+      $statusLabel = match($t['statut']) {
+        'EN_ATTENTE' => 'En attente', 'ASSIGNE' => 'Assigné', default => 'Résolue'
+      };
+    ?>
+    <div class="card ticket-card rounded-xl p-5 cursor-pointer transition-all duration-150"
+         onclick="window.location='request_detail.php?id=<?= $t['id'] ?>'">
+      
+      <div class="flex items-start justify-between gap-4">
+        <div class="space-y-2 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="mono text-xs" style="color:#4a4d60;">#<?= $t['id'] ?></span>
+            <span class="skill-tag" onclick="event.stopPropagation()"><?= htmlspecialchars($t['techno']) ?></span>
+            <span class="<?= $statusClass ?> text-xs font-medium px-2.5 py-0.5 rounded-full" onclick="event.stopPropagation()"><?= $statusLabel ?></span>
+            <span class="text-xs ml-2" style="color:#6b6e85;">
+              Posté par <strong class="text-gray-300"><?= htmlspecialchars($t['etudiant']) ?></strong> 
+              <span class="mx-1.5" style="color:#4a4d60;">•</span> 
+              <span class="mono text-gray-400"><?= htmlspecialchars($t['date_creation'] ?? 'Date inconnue') ?></span>
+            </span>
+          </div>
+          
+          <h3 class="font-semibold text-base text-white"><?= htmlspecialchars($t['titre']) ?></h3>
+          
+          <p class="text-sm text-gray-400 line-clamp-2 pt-1">
+            <?= htmlspecialchars($t['description'] ?? 'Aucune description fournie.') ?>
+          </p>
+        </div>
+
+        <div class="flex flex-col items-end justify-between h-full min-w-[140px] self-stretch pt-1">
+          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['id'] ?? 0) !== ($t['id_student'] ?? -1)): ?>
+          <form action="../scripts/assign_process.php" method="POST" onclick="event.stopPropagation()">
+            <input type="hidden" name="ticket_id" value="<?= $t['id'] ?>"/>
+            <button type="submit" class="text-xs px-3 py-2 rounded-xl font-semibold btn-primary text-white shadow-md flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Accepter la demande
+            </button>
+          </form>
+          <?php else: ?>
+          <span class="text-xs font-mono" style="color:#4a4d60;">—</span>
+          <?php endif; ?>
+        </div>
+      </div>
+
     </div>
-    <table class="w-full text-sm">
-      <thead>
-        <tr style="border-bottom:1px solid #2a2d3e;">
-          <th class="px-6 py-3 text-left text-xs font-medium" style="color:#4a4d60;">#</th>
-          <th class="px-4 py-3 text-left text-xs font-medium" style="color:#4a4d60;">Titre</th>
-          <th class="px-4 py-3 text-left text-xs font-medium" style="color:#4a4d60;">Techno</th>
-          <th class="px-4 py-3 text-left text-xs font-medium" style="color:#4a4d60;">Statut</th>
-          <th class="px-4 py-3 text-left text-xs font-medium" style="color:#4a4d60;">Apprenant</th>
-          <th class="px-4 py-3 text-left text-xs font-medium" style="color:#4a4d60;">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        // Example rows — replace with actual $tickets from HelpRequestRepository
-        $demo = [
-          ['id'=>1,'titre'=>'Problème avec PDO et les transactions','techno'=>'PHP','statut'=>'EN_ATTENTE','etudiant'=>'Khalid M.','tuteur'=>null],
-          ['id'=>2,'titre'=>'Comprendre les jointures SQL','techno'=>'SQL','statut'=>'ASSIGNE','etudiant'=>'Sara B.','tuteur'=>'Younes A.'],
-          ['id'=>3,'titre'=>'Callback vs Promise en JS','techno'=>'JavaScript','statut'=>'EN_ATTENTE','etudiant'=>'Amine L.','tuteur'=>null],
-          ['id'=>4,'titre'=>'Héritage POO — méthodes abstraites','techno'=>'PHP','statut'=>'RESOLUE','etudiant'=>'Fatima Z.','tuteur'=>'Mehdi R.'],
-          ['id'=>5,'titre'=>'Flexbox vs Grid CSS','techno'=>'CSS','statut'=>'EN_ATTENTE','etudiant'=>'Karim D.','tuteur'=>null],
-        ];
-        $tickets = $tickets ?? $demo;
-        foreach ($tickets as $t):
-          $statusClass = match($t['statut']) {
-            'EN_ATTENTE' => 'badge-wait', 'ASSIGNE' => 'badge-assign', default => 'badge-done'
-          };
-          $statusLabel = match($t['statut']) {
-            'EN_ATTENTE' => 'En attente', 'ASSIGNE' => 'Assigné', default => 'Résolue'
-          };
-        ?>
-        <tr class="ticket-row cursor-pointer" style="border-bottom:1px solid #2a2d3e11;"
-            onclick="window.location='request_detail.php?id=<?= $t['id'] ?>'">
-          <td class="px-6 py-3.5 mono text-xs" style="color:#4a4d60;">#<?= $t['id'] ?></td>
-          <td class="px-4 py-3.5 font-medium text-sm"><?= htmlspecialchars($t['titre']) ?></td>
-          <td class="px-4 py-3.5">
-            <span class="skill-tag"><?= htmlspecialchars($t['techno']) ?></span>
-          </td>
-          <td class="px-4 py-3.5">
-            <span class="<?= $statusClass ?> text-xs font-medium px-2.5 py-1 rounded-full"><?= $statusLabel ?></span>
-          </td>
-          <td class="px-4 py-3.5 text-xs" style="color:#9a9db5;"><?= htmlspecialchars($t['etudiant']) ?></td>
-          <td class="px-4 py-3.5">
-            <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['id'] ?? 0) !== ($t['id_student'] ?? -1)): ?>
-            <form action="../scripts/assign_process.php" method="POST" onclick="event.stopPropagation()">
-              <input type="hidden" name="ticket_id" value="<?= $t['id'] ?>"/>
-              <button type="submit" class="text-xs px-3 py-1 rounded-lg font-medium transition-colors"
-                      style="background:#6c63ff22;color:#a5a0ff;border:1px solid #6c63ff33;">
-                Prendre en charge
-              </button>
-            </form>
-            <?php else: ?>
-            <span class="text-xs" style="color:#4a4d60;">—</span>
-            <?php endif; ?>
-          </td>
-        </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
+    <?php endforeach; ?>
   </div>
 </main>
 
-<!-- MODAL : New Ticket -->
 <div id="modal-new" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:#00000088;">
   <div class="card rounded-2xl p-6 w-full max-w-md mx-4">
     <div class="flex items-center justify-between mb-5">
@@ -228,6 +261,24 @@
     </form>
   </div>
 </div>
+
+<script>
+  const notiToggleBtn = document.getElementById('noti-toggle-btn');
+  const notiDropdown = document.getElementById('notification-dropdown');
+
+  // Toggle notification menu
+  notiToggleBtn.addEventListener('click', function(event) {
+    event.stopPropagation();
+    notiDropdown.classList.toggle('hidden');
+  });
+
+  // Close dropdown if user clicks anywhere else on the screen
+  document.addEventListener('click', function() {
+    if (!notiDropdown.classList.contains('hidden')) {
+      notiDropdown.classList.add('hidden');
+    }
+  });
+</script>
 
 </body>
 </html>
