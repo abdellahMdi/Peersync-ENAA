@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -49,23 +52,23 @@
       <h1 class="text-xl font-semibold mb-1">Connexion</h1>
       <p class="text-sm mb-6" style="color:#6b6e85;">Accède à ton espace d'entraide.</p>
 
-      <form action="../scripts/login_process.php" method="POST" class="space-y-4">
+      <form action= "../scripts/login_process.php" method="POST" class="space-y-4">
 
         <div>
           <label class="block text-xs font-medium mb-1.5" style="color:#9a9db5;">Adresse email</label>
           <input type="email" name="email" placeholder="prenom.nom@enaa.ma"
-                 class="input-field w-full rounded-lg px-4 py-2.5 text-sm" required />
+                 class="input-field w-full rounded-lg px-4 py-2.5 text-sm" />
         </div>
 
         <div>
           <label class="block text-xs font-medium mb-1.5" style="color:#9a9db5;">Mot de passe</label>
           <input type="password" name="password" placeholder="••••••••"
-                 class="input-field w-full rounded-lg px-4 py-2.5 text-sm" required />
+                 class="input-field w-full rounded-lg px-4 py-2.5 text-sm"  />
         </div>
 
-        <?php if (isset($_GET['error'])): ?>
+         <?php if (isset($_SESSION['error'])): ?>
         <div class="rounded-lg px-4 py-2.5 text-sm" style="background:#ff4d4d18;border:1px solid #ff4d4d44;color:#ff8080;">
-          <?= htmlspecialchars($_GET['error']) ?>
+          <?= $_SESSION['error'] ?>
         </div>
         <?php endif; ?>
 
