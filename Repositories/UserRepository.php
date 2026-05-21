@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../config/db.php";
+require_once __DIR__ . '/../Entities/HelpRequest.php'; 
 
 function getUserByEmail($email){
     try{
@@ -13,8 +14,6 @@ function getUserByEmail($email){
     } catch(PDOException $e){
         echo "error : " . $e->getMessage();
     }
-      
-
 }
 
 function updateFirstTime(int $user_id) {
@@ -74,12 +73,12 @@ function getAllRequests()
                 $row->title,
                 $row->description,
                 new DateTime($row->date_pub),
-                $row['learner_id'],
-                $row['skill_id'],
-                $row['status_id'],
-                $row['date_session'] ? new DateTime($row['date_session']) : null,
-                $row['tutor_id'],
-                $row['id']
+                $row->learner_id,
+                $row->skill_id,
+                $row->status_id,
+                $row->date_session ? new DateTime($row->date_session) : null,
+                $row->tutor_id,
+                $row->id
             );
 
             $requests[] = $request;
