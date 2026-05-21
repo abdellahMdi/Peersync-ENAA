@@ -28,3 +28,15 @@ function updateFirstTime($user_id) {
         echo "Error : " . $e->getMessage() ;
     }
 }       
+
+function getAllSkills(){
+    try {
+            $sql = "SELECT id,name FROM skills";
+            $conn = DB::connect();
+            $stmt = $conn->query($sql);
+            $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $res;
+        } catch(PDOException $e){
+            echo "error : " . $e->getMessage();
+        }
+}

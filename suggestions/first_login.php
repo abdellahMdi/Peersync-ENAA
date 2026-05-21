@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . "/../Repositories/UserRepository.php";
+if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id']))
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,7 +28,7 @@ require_once __DIR__ . "/../Repositories/UserRepository.php";
   <div class="fixed inset-0 opacity-5 pointer-events-none" style="background-image: linear-gradient(#6c63ff 1px, transparent 1px), linear-gradient(90deg, #6c63ff 1px, transparent 1px); background-size: 40px 40px;"></div>
   <div class="w-full max-w-2xl mx-auto my-auto relative z-10">
     <div class="text-center mb-8">
-      <h1 class="text-xl font-bold text-white mb-1">Bienvenue, <?= htmlspecialchars($_SESSION['nom'] ?? 'Apprenant') ?> !</h1>
+      <h1 class="text-xl font-bold text-white mb-1">Bienvenue, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Apprenant') ?> !</h1>
       <p class="text-xs text-gray-400">Clique sur les technologies pour définir ton profil d'entraide.</p>
     </div>
     <div class="card rounded-2xl p-6 space-y-6">
@@ -39,16 +40,16 @@ require_once __DIR__ . "/../Repositories/UserRepository.php";
       <form action="../scripts/onboarding_process.php" method="POST" id="onboarding-form">
         <div class="flex flex-wrap justify-center gap-3 mb-6">
           <?php 
-          $technos = ['PHP', 'JavaScript', 'SQL', 'HTML', 'CSS', 'POO', 'Git', 'TypeScript', 'React', 'MySQL', 'Docker', 'Node.js'];
+          $technos = getAllSkills();
           foreach ($technos as $t): 
           ?>
             <button type="button"
                     class="skill-tag"
-                    data-skill="<?= $t ?>"
+                    data-skill="<?= $t->id ?>"
                     data-state="none"
                     onclick="cycleSkill(this)">
               <span class="state-icon text-xs font-bold">+</span>
-              <span><?= $t ?></span>
+              <span><?= $t->name ?></span>
             </button>
           <?php endforeach; ?>
         </div>
