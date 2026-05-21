@@ -3,9 +3,9 @@ require_once __DIR__ . "/../config/db.php";
 
 function getUserByEmail($email){
     try{
-        $sql = "SELECT u.id,u.name,u.email,u.password,u.first_time,r.role FROM users u 
-                JOIN roles r ON r.id = u.role_id
-                WHERE u.email = ". $email;
+        $sql = "SELECT users.id,users.name,users.email,users.password,users.first_time,roles.role FROM users
+                JOIN roles ON roles.id = users.role_id
+                WHERE users.email = '". $email . "'";
         $conn = DB::connect();
         $stmt = $conn->query($sql);
         $res = $stmt->fetch(PDO::FETCH_OBJ);

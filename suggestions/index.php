@@ -64,11 +64,13 @@ session_start();
           <label class="block text-xs font-medium mb-1.5" style="color:#9a9db5;">Mot de passe</label>
           <input type="password" name="password" class="input-field w-full rounded-lg px-4 py-2.5 text-sm"  />
         </div>
-        <?php if (isset($_SESSION['error'])): ?>
+        <?php if (!empty($_SESSION['error'])): ?>
         <div class="rounded-lg px-4 py-2.5 text-sm" style="background:#ff4d4d18;border:1px solid #ff4d4d44;color:#ff8080;">
             <?= $_SESSION['error'] ?>
         </div>
-        <?php endif; ?>
+        <?php 
+            $_SESSION['error'] = ""; // ✅ clear after showing
+        endif; ?>
         <button name="submit" type="submit" class="btn-primary w-full rounded-lg py-2.5 text-sm font-semibold text-white mt-2">
           Se connecter
         </button>
