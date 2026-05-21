@@ -57,3 +57,33 @@ function addUserSkill(int $userId, int $skillId, string $maitrise)
             echo "error : " . $e->getMessage();
         }
     }
+function getAllRequests()
+    {
+        try {
+            $sql ="SELECT * FROM help_requests";
+            $conn = DB::connect();
+            $stmt = $conn->query("SELECT * FROM help_requests");
+            $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
+        } catch(PDOException $e){
+            echo "error : " . $e->getMessage();
+        }
+        $requests = [];
+
+        foreach ($rows as $row) {
+            $request = new HelpRequest(
+                $row->title,
+                $row->description,
+                new DateTime($row->date_pub),
+                $row['learner_id'],
+                $row['skill_id'],
+                $row['status_id'],
+                $row['date_session'] ? new DateTime($row['date_session']) : null,
+                $row['tutor_id'],
+                $row['id']
+            );
+
+            $requests[] = $request;
+        }
+
+        return $requests;
+    }
