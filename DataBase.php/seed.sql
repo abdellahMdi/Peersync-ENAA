@@ -1,3 +1,4 @@
+-- Active: 1779352759974@@127.0.0.1@3306
 -- ============================================================
 --  PeerSync — Demo Data
 -- ============================================================
@@ -9,20 +10,25 @@ INSERT INTO `roles` (`id`, `role`) VALUES
 (1, 'apprenant'),
 (2, 'admin');
  
+
+ DROP TABLE users ;
+ DROP TABLE roles ;
+
+ select * from users;
 -- ------------------------------------------------------------
---  users  (password = bcrypt of "password123")
+--  users  (password = bcrypt of "AZERTY123")
 -- ------------------------------------------------------------
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `first_time`, `role_id`) VALUES
-(1,  'Khalid Moussaoui',  'khalid.m@enaa.ma',   '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(2,  'Sara Benali',       'sara.b@enaa.ma',      '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(3,  'Younes Alaoui',     'younes.a@enaa.ma',    '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(4,  'Fatima Zahra',      'fatima.z@enaa.ma',    '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(5,  'Amine Lahlou',      'amine.l@enaa.ma',     '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(6,  'Mehdi Rachidi',     'mehdi.r@enaa.ma',     '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(7,  'Karim Drissi',      'karim.d@enaa.ma',     '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(8,  'Nadia Chraibi',     'nadia.c@enaa.ma',     '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(9,  'Omar Senhaji',      'omar.s@enaa.ma',      '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 1),
-(10, 'Admin ENAA',        'admin@enaa.ma',        '$2y$10$eImiTXuWVxfM37uY4JANjQ==', '0', 2);
+(1,  'Khalid Moussaoui',  'khalid.m@enaa.ma',   '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(2,  'Sara Benali',       'sara.b@enaa.ma',      '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(3,  'Younes Alaoui',     'younes.a@enaa.ma',    '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(4,  'Fatima Zahra',      'fatima.z@enaa.ma',    '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(5,  'Amine Lahlou',      'amine.l@enaa.ma',     '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(6,  'Mehdi Rachidi',     'mehdi.r@enaa.ma',     '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(7,  'Karim Drissi',      'karim.d@enaa.ma',     '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(8,  'Nadia Chraibi',     'nadia.c@enaa.ma',     '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(9,  'Omar Senhaji',      'omar.s@enaa.ma',      '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 1),
+(10, 'Admin ENAA',        'admin@enaa.ma',        '$2a$11$gU1039/8HZFAWoT8osdxCuOCuTRMG5exXN66s4/M8Q1s9k0mMYzbK', '0', 2);
  
 -- ------------------------------------------------------------
 --  skills
