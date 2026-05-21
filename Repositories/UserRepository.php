@@ -17,7 +17,7 @@ function getUserByEmail($email){
 
 }
 
-function updateFirstTime($user_id) {
+function updateFirstTime(int $user_id) {
     try {
         $sql = "UPDATE users SET first_time = '1' WHERE id = ?";
         $conn = DB::connect();
@@ -40,3 +40,20 @@ function getAllSkills(){
             echo "error : " . $e->getMessage();
         }
 }
+function addUserSkill(int $userId, int $skillId, string $maitrise)
+    {
+        $allowed = ['maîtrisées', 'à travailler'];
+
+        if (!in_array($maitrise, $allowed, true)) {
+            $maitrise = 'à travailler';
+        }
+        
+        try {
+            $sql ="INSERT INTO user_skills (user_id, skill_id, maitrise) VALUES (?, ?, ?)";
+            $conn = DB::connect();
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$userId, $skillId, $maitrise]);
+        } catch(PDOException $e){
+            echo "error : " . $e->getMessage();
+        }
+    }

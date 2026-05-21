@@ -1,6 +1,5 @@
 <?php
 session_start(); 
-
 require_once __DIR__ . "/../Repositories/UserRepository.php";
 
 $_SESSION['error'] = "";

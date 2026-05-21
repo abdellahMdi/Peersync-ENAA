@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -96,11 +99,11 @@
   <div class="p-3" style="border-top:1px solid #2a2d3e;">
     <div class="flex items-center gap-3 px-2 py-2 rounded-lg" style="background:#2a2d3e33;">
       <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#6c63ff33;color:#a5a0ff;">
-        <?= strtoupper(substr($_SESSION['nom'] ?? 'U', 0, 2)) ?>
+        <?= 'U' ?>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-xs font-medium truncate"><?= htmlspecialchars($_SESSION['nom'] ?? 'Utilisateur') ?></p>
-        <p class="text-xs mono truncate" style="color:#6b6e85;"><?= htmlspecialchars($_SESSION['role'] ?? 'apprenant') ?></p>
+        <p class="text-xs font-medium truncate"><?= $_SESSION['user_name']; ?></p>
+        <p class="text-xs mono truncate" style="color:#6b6e85;"><?= $_SESSION['user_role']; ?></p>
       </div>
     </div>
     <a href="../scripts/logout.php" class="flex items-center gap-2 px-2 py-2 text-xs mt-1 rounded-lg nav-link" style="color:#ff6b6b;">
@@ -129,7 +132,7 @@
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-2xl font-bold">Tableau de bord</h1>
-      <p class="text-sm mt-0.5" style="color:#6b6e85;">Bienvenue, <?= htmlspecialchars($_SESSION['nom'] ?? 'Apprenant') ?></p>
+      <p class="text-sm mt-0.5" style="color:#6b6e85;">Bienvenue, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Apprenant') ?></p>
     </div>
     <button onclick="document.getElementById('modal-new').classList.remove('hidden')"
             class="btn-primary flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white">
@@ -155,12 +158,6 @@
 
   <div class="flex items-center justify-between mb-4">
     <h2 class="font-semibold text-lg">Demandes d'aide récentes</h2>
-    <select class="input-field text-xs rounded-lg px-3 py-1.5">
-      <option>Toutes</option>
-      <option>En attente</option>
-      <option>Assignées</option>
-      <option>Résolues</option>
-    </select>
   </div>
 
   <div class="space-y-4">

@@ -178,13 +178,13 @@ INSERT INTO `help_requests` (`title`, `description`, `date_pub`, `date_session`,
  '2025-01-21 13:00:00', NULL, 8, NULL, 5, 1),
  
 ('Initiation à Git — conflits de merge',
- 'En travaillant en équipe, j\'ai un conflit de merge que je ne sais pas résoudre. Git me demande de modifier manuellement le fichier.',
+ 'En travaillant en équipe, j ai un conflit de merge que je ne sais pas résoudre. Git me demande de modifier manuellement le fichier.',
  '2025-01-22 07:55:00', NULL, 1, NULL, 8, 1);
  
 -- ------------------------------------------------------------
 --  reviews  (only for RESOLUE requests — ids 1, 2, 3)
 -- ------------------------------------------------------------
 INSERT INTO `reviews` (`comment`, `rating`, `reviewer_id`, `help_quest_id`) VALUES
-('Younes a été super patient, il m\'a expliqué chaque type de jointure avec des exemples clairs. Merci beaucoup !', 5, 2, 1),
+("Younes a été super patient, il m a expliqué chaque type de jointure avec des exemples clairs. Merci beaucoup !", 5, 2, 1),
 ('Mehdi a directement trouvé mon erreur de conception. Très professionnel et pédagogue.', 5, 1, 2),
-('Fatima m\'a montré comment refactoriser mon code avec async/await. Très clair et efficace !', 4, 8, 3);
+("Fatima m a montré comment refactoriser mon code avec async/await. Très clair et efficace !", 4, 8, 3);

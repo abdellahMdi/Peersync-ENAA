@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once __DIR__ . "/../Repositories/UserRepository.php";
-if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id']))
+if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])){
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,8 +35,8 @@ if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id']))
     </div>
     <div class="card rounded-2xl p-6 space-y-6">
       <div class="flex items-center justify-center gap-6 text-xs pb-4 border-b border-[#2a2d3e33]" style="color:#6b6e85;">
-        <span class="flex items-center gap-1.5"><span class="text-indigo-400 font-bold">✓</span> Je maîtrise (Tuteur)</span>
-        <span class="flex items-center gap-1.5"><span class="text-amber-400 font-bold">~</span> À bosser (Apprenant)</span>
+        <span class="flex items-center gap-1.5"><span class="text-indigo-400 font-bold">✓</span> maîtrisées</span>
+        <span class="flex items-center gap-1.5"><span class="text-amber-400 font-bold">~</span> à travailler</span>
         <span class="flex items-center gap-1.5"><span class="text-gray-500 font-bold">+</span> Non sélectionné</span>
       </div>
       <form action="../scripts/onboarding_process.php" method="POST" id="onboarding-form">
@@ -63,8 +65,8 @@ if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id']))
   </div>
 <script>
   // Cycle des états : neutre (+) -> maîtrisé (✓) -> à travailler (~) -> retour au début
-  const states = ['none', 'maitrisee', 'a_travailler'];
-  const icons = { none: '+', mastered: '✓', learning: '~', maitrisee: '✓', a_travailler: '~' };
+  const states = ['none','maîtrisées', 'à travailler'];
+  const icons = { none: '+',maîtrisées: '✓', 'à travailler': '~' };
   function updateHiddenInputs() {
     const container = document.getElementById('hidden-inputs');
     container.innerHTML = '';
