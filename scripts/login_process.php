@@ -1,56 +1,46 @@
 <?php
-require_once __DIR__ . "../config/db.php";
+require_once __DIR__ . "/../Repositories/UserRepository.php";
 
 session_start();
     $_SESSION['error'] = "";
     $email = htmlentities($_POST["email"]);
-    $password = password_hash($_POST["password"]);
+    $password = $_POST["password"]; 
 
-if(isset($_POST["submit"])){
-    header('Location: ../suggestions/index.php'); # path
-    exit ;
-}
 if(empty($_POST["email"]))
  {
      $_SESSION['error'] = "you have to enter the email";
      header('Location: ../suggestions/index.php'); # path
-     exit ;
  } elseif (empty($_POST["password"])) {
      $_SESSION['error'] = "you have to enter the password";
      header('Location: ../suggestions/index.php'); # path
-     exit ;
+ }else {
+    checkUserEntries($email , $password);
  }
- 
- function checkUserEntries($email , $passord){
-    $sql = "SELECT u.id,u.name,u.email,u.password,u.first_time,r.role FROM users u 
-            JOIN roles r ON r.id = u.role_id
-            WHERE u.email = ". $email ;
-    $conn = DB::connect();
-    $stmt = $conn->query($sql);
-    $response = $stmt->fetchAll(PDO::FETCH_OBJ);
-    if(!empty($response)){
+ exit ;
+ function checkUserEntries($email , $password){
+    $response = getUserByEmail($email);
+    if($response->email !== $email ){
     $_SESSION['error'] = "this email : ".$email." Doesn't belong to any student";
      header('Location: ../suggestions/index.php'); # path
      exit ;
     }
-    $_SESSION['user_id'] = $respose->id ;
-    $_SESSION['user_name'] = $respose->name ;
-    $_SESSION['user_email'] = $respose->email ;
-    $_SESSION['user_role'] = $respose->role ;
+    $_SESSION['user_id'] = $response->id ;
+    $_SESSION['user_name'] = $response->name ;
+    $_SESSION['user_email'] = $response->email ;
+    $_SESSION['user_role'] = $response->role ;
 
-    if($respose->role == "apprenant"){
-        if($respose->first_time == 0){
+    if($response->role == "apprenant"){
+        if(!password_verify($password, $response->password)){
+            $_SESSION['error'] = "wrong password";
+            header('Location: ../suggestions/index.php'); # path
+            exit ;
+        }
+        if($response->first_time == 0){
+            updateFirstTime($response->id);
             header('Location: ../suggestions/first_login.php'); # path
-
-
-
         }else {
             header('Location: ../suggestions/dashboard.php'); # path
         }
          exit ;
     }
-
- }
-
-
- unset($_SESSION['error']);
+}
