@@ -107,7 +107,7 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
         <p class="text-xs mono truncate" style="color:#6b6e85;"><?= $_SESSION['user_role']; ?></p>
       </div>
     </div>
-    <a href="../scripts/logout.php" class="flex items-center gap-2 px-2 py-2 text-xs mt-1 rounded-lg nav-link" style="color:#ff6b6b;">
+    <a href="../scripts/close_process.php" class="flex items-center gap-2 px-2 py-2 text-xs mt-1 rounded-lg nav-link" style="color:#ff6b6b;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Déconnexion
     </a>
@@ -188,17 +188,17 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
             </span>
           </div>
           
-          <h3 class="font-semibold text-base text-white"><?= htmlspecialchars($t['titre']) ?></h3>
+          <h3 class="font-semibold text-base text-white"><?= $t->getgetTitle() ; ?></h3>
           
           <p class="text-sm text-gray-400 line-clamp-2 pt-1">
-            <?= htmlspecialchars($t['description'] ?? 'Aucune description fournie.') ?>
+            <?= $t->getDescription() ?? 'Aucune description fournie.' ?>
           </p>
         </div>
 
         <div class="flex flex-col items-end justify-between h-full min-w-[140px] self-stretch pt-1">
-          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['user_id'] ?? 0) !== ($t['id_student'] ?? -1)): ?>
+          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['user_id'] ?? 0) !== ($t->learner->getId() ?? -1)): ?>
           <form action="../scripts/assign_process.php" method="POST" onclick="event.stopPropagation()">
-            <input type="hidden" name="ticket_id" value="<?= $t['id'] ?>"/>
+            <input type="hidden" name="ticket_id" value="<?= $t->getId() ?>"/>
             <button type="submit" class="text-xs px-3 py-2 rounded-xl font-semibold btn-primary text-white shadow-md flex items-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               Accepter la demande

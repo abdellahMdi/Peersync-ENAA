@@ -65,8 +65,8 @@ if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])){
   </div>
 <script>
   // Cycle des états : neutre (+) -> maîtrisé (✓) -> à travailler (~) -> retour au début
-  const states = ['none','maîtrisées', 'à travailler'];
-  const icons = { none: '+',maîtrisées: '✓', 'à travailler': '~' };
+  const states = ['none','maîtrisées', 'à_travailler'];
+  const icons = { none: '+',maîtrisées: '✓', 'à_travailler': '~' };
   function updateHiddenInputs() {
     const container = document.getElementById('hidden-inputs');
     container.innerHTML = '';
@@ -86,9 +86,9 @@ if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])){
     
     btn.dataset.state = nextState;
     btn.querySelector('.state-icon').textContent = icons[nextState];
-    btn.classList.remove('mastered', 'learning');
-    if (nextState === 'maitrisee') btn.classList.add('mastered');
-    if (nextState === 'a_travailler') btn.classList.add('learning');
+    btn.classList.remove('maîtrisées', 'à_travailler');
+    if (nextState === 'maîtrisées') btn.classList.add('maîtrisées');
+    if (nextState === 'à_travailler') btn.classList.add('à_travailler');
     updateHiddenInputs();
   }
   </script>
