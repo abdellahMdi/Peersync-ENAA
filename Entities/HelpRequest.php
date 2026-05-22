@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/User.php";
+require_once __DIR__ . "/Skill.php";
 
 class HelpRequest
 {
@@ -7,24 +9,21 @@ class HelpRequest
     private string   $description;
     private DateTime $datePub;
     private ?DateTime $dateSession;
-    private int      $learnerId;
-    private ?int     $tutorId;
-    private int      $skillId;
-    private int      $statusId;
-    public const STATUS_EN_ATTENTE = 1;
-    public const STATUS_ASSIGNE    = 2;
-    public const STATUS_RESOLUE    = 3;
-
-    public function __construct(string $title, string $description, DateTime $datePub, int $learnerId, int $skillId, int $statusId = self::STATUS_EN_ATTENTE, ?DateTime $dateSession = null, ?int $tutorId = null, ?int $id = null
+    public User      $learner;
+    public ?User     $tutor;
+    public Skill    $skill;
+    private string      $status;
+    
+    public function __construct(string $title, string $description, DateTime $datePub, User $learner, Skill $skill, string $status , ?DateTime $dateSession = null, ?User $tutor = null, ?int $id = null
     ) {
         $this->title       = $title;
         $this->description = $description;
         $this->datePub     = $datePub;
-        $this->learnerId   = $learnerId;
-        $this->skillId     = $skillId;
-        $this->statusId    = $statusId;   // always EN_ATTENTE on creation
+        $this->learner   = $learner;
+        $this->skill     = $skill;
+        $this->status    = $status;   // always EN_ATTENTE on creation
         $this->dateSession = $dateSession;
-        $this->tutorId     = $tutorId;
+        $this->tutor     = $tutor;
         $this->id          = $id;
     }
     // ── Getters ──────────────────────────────────────────────
@@ -34,10 +33,7 @@ class HelpRequest
     public function getDescription(): string { return $this->description; }
     public function getDatePub(): DateTime  { return $this->datePub; }
     public function getDateSession(): ?DateTime { return $this->dateSession; }
-    public function getLearnerId(): int     { return $this->learnerId; }
-    public function getTutorId(): ?int      { return $this->tutorId; }
-    public function getSkillId(): int       { return $this->skillId; }
-    public function getStatusId(): int      { return $this->statusId; }
+    public function getStatus(): string      { return $this->status; }
 
     // ── Setters ──────────────────────────────────────────────
 
@@ -46,5 +42,4 @@ class HelpRequest
     public function setDescription(string $desc): void { $this->description = $desc; }
     public function setDatePub(DateTime $date): void   { $this->datePub = $date; }
     public function setDateSession(?DateTime $date): void { $this->dateSession = $date; }
-    public function setSkillId(int $skillId): void { $this->skillId = $skillId; }
 }
