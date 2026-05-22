@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once __DIR__."/../Repositories/HelpRequestRepository.php"
+require_once __DIR__."/../Repositories/HelpRequestRepository.php";
+if(!isset($_SESSION['user_id']) || empty($_SESSION['user_id']) ){
+  header('Location: ../Pages/index.php');
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -172,8 +176,8 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
         'EN_ATTENTE' => 'En attente', 'ASSIGNE' => 'Assigné', default => 'Résolue'
       };
     ?>
-    <div class="card ticket-card rounded-xl p-5 cursor-pointer transition-all duration-150"
-         onclick="window.location='request_detail.php?id=<?= $t->getId() ; $_SESSION['request'] = $t ?>'">
+    <form action="../scripts/assign_process.php" method="POST" class="card ticket-card rounded-xl p-5 cursor-pointer transition-all duration-150"
+         onclick="window.location='request_detail.php?id=<?= $t->getId()?>'">
       
       <div class="flex items-start justify-between gap-4">
         <div class="space-y-2 flex-1">
@@ -210,7 +214,7 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
         </div>
       </div>
 
-    </div>
+          </form>
     <?php endforeach; ?>
   </div>
 </main>

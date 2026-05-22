@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(isset($_SESSION['request']) || empty($_SESSION['request']) ){
+  header('Location: ../Pages/dashboard.php');
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -67,20 +74,20 @@
   <div class="flex items-center gap-2 text-xs mb-6" style="color:#6b6e85;">
     <a href="dashboard.php" class="hover:text-white transition-colors">Dashboard</a>
     <span>›</span>
-    <span style="color:#9a9db5;">Ticket #<?= htmlspecialchars($_GET['id'] ?? '1') ?></span>
+    <span style="color:#9a9db5;">Ticket #<?= htmlspecialchars($_SESSION['request']->getId() ?? '1') ?></span>
   </div>
 
   <?php
   // Demo data — replace with $ticket from HelpRequestRepository::findById()
   $ticket = $ticket ?? [
-    'id' => 1,
-    'titre' => 'Problème avec PDO et les transactions',
-    'description' => "Je n'arrive pas à comprendre comment fonctionne le rollback dans PDO. Quand j'exécute plusieurs requêtes dans un try/catch, si la deuxième échoue, la première est quand même committée. J'ai essayé beginTransaction() mais ça ne semble pas marcher comme prévu.",
-    'technologie' => 'PHP',
-    'statut' => 'ASSIGNE',
-    'etudiant' => 'Khalid M.',
-    'tuteur' => 'Younes A.',
-    'created_at' => '2025-01-15 14:32',
+    'id' => $_SESSION['request']->getId(),
+    'titre' => $_SESSION['request']->getTitle(),
+    'description' => $_SESSION['request']->getDescription(),
+    'technologie' => $_SESSION['request']->skill->getName(),
+    'statut' => getStatus(),
+    'etudiant' => $_SESSION['request']->learner->getName(),
+    'tuteur' => $_SESSION['request']->tutor->getName() ?? "not assigned yet",
+    'created_at' => $_SESSION['request']->getDatePub(),
   ];
   $statusClass = match($ticket['statut']) {
     'EN_ATTENTE' => 'badge-wait', 'ASSIGNE' => 'badge-assign', default => 'badge-done'

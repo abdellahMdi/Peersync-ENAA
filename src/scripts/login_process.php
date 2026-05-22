@@ -8,11 +8,11 @@ $password = $_POST["password"];
 
 if (empty($email)) {
     $_SESSION['error'] = "You have to enter the email";
-    header('Location: ../suggestions/index.php');
+    header('Location: ../Pages/index.php');
     exit; 
 } elseif (empty($password)) {
     $_SESSION['error'] = "You have to enter the password";
-    header('Location: ../suggestions/index.php');
+    header('Location: ../Pages/index.php');
     exit;
 } else {
     checkUserEntries($email, $password);
@@ -23,14 +23,14 @@ function checkUserEntries($email, $password) {
 
     if (empty($response->email)) {
         $_SESSION['error'] = "This email: $email doesn't belong to any student";
-        header('Location: ../suggestions/index.php');
+        header('Location: ../Pages/index.php');
         exit;
     }
 
     if ($response->role == "apprenant") {
         if (!password_verify($password, $response->password)) {
             $_SESSION['error'] = "Wrong password";
-            header('Location: ../suggestions/index.php');
+            header('Location: ../Pages/index.php');
             exit;
         }
 
@@ -42,9 +42,9 @@ function checkUserEntries($email, $password) {
 
         if ($response->first_time == 0) {
             updateFirstTime($response->id);
-            header('Location: ../suggestions/first_login.php');
+            header('Location: ../Pages/first_login.php');
         } else {
-            header('Location: ../suggestions/dashboard.php'); 
+            header('Location: ../Pages/dashboard.php'); 
         }
         exit;
     }
