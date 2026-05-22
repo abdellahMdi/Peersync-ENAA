@@ -165,15 +165,15 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
     <?php
     $tickets = getAllRequests();
     foreach ($tickets as $t):
-      $statusClass = match($t['statut']) {
+      $statusClass = match($t->getStatus()) {
         'EN_ATTENTE' => 'badge-wait', 'ASSIGNE' => 'badge-assign', default => 'badge-done'
       };
-      $statusLabel = match($t['statut']) {
+      $statusLabel = match($t->getStatus()) {
         'EN_ATTENTE' => 'En attente', 'ASSIGNE' => 'Assigné', default => 'Résolue'
       };
     ?>
     <div class="card ticket-card rounded-xl p-5 cursor-pointer transition-all duration-150"
-         onclick="window.location='request_detail.php?id=<?= $t->getId() ?>'">
+         onclick="window.location='request_detail.php?id=<?= $t->getId() ; $_SESSION['request'] = $t ?>'">
       
       <div class="flex items-start justify-between gap-4">
         <div class="space-y-2 flex-1">
@@ -188,7 +188,7 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
             </span>
           </div>
           
-          <h3 class="font-semibold text-base text-white"><?= $t->getgetTitle() ; ?></h3>
+          <h3 class="font-semibold text-base text-white"><?= $t->getTitle() ; ?></h3>
           
           <p class="text-sm text-gray-400 line-clamp-2 pt-1">
             <?= $t->getDescription() ?? 'Aucune description fournie.' ?>
@@ -196,7 +196,7 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
         </div>
 
         <div class="flex flex-col items-end justify-between h-full min-w-[140px] self-stretch pt-1">
-          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['user_id'] ?? 0) !== ($t->learner->getId() ?? -1)): ?>
+          <?php if ($t->getStatus() === 'EN_ATTENTE' && ($_SESSION['user_id'] ?? 0) !== ($t->learner->getId() ?? -1)): ?>
           <form action="../scripts/assign_process.php" method="POST" onclick="event.stopPropagation()">
             <input type="hidden" name="ticket_id" value="<?= $t->getId() ?>"/>
             <button type="submit" class="text-xs px-3 py-2 rounded-xl font-semibold btn-primary text-white shadow-md flex items-center gap-1.5">
@@ -235,9 +235,13 @@ require_once __DIR__."/../Repositories/HelpRequestRepository.php"
       </div>
       <div>
         <label class="block text-xs font-medium mb-1.5" style="color:#9a9db5;">Technologie</label>
-        <select name="technologie" class="input-field w-full rounded-lg px-3 py-2.5 text-sm">
-          <option>PHP</option><option>JavaScript</option><option>SQL</option>
-          <option>CSS</option><option>HTML</option><option>POO</option>
+        <select name="skill_id" class="input-field w-full rounded-lg px-3 py-2.5 text-sm">
+            <?php $skills = bringAllSkills(); ?>
+            <?php foreach ($skills as $skill): ?>
+                <option value="<?= $skill->getId() ?>">
+                    <?= $skill->getName() ?>
+                </option>
+            <?php endforeach; ?>
         </select>
       </div>
       <div class="flex gap-3 pt-2">

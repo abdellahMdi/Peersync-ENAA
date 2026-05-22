@@ -1,5 +1,7 @@
--- Active: 1779352759974@@127.0.0.1@3306@peersync
+-- Active: 1779446988220@@127.0.0.1@3306
 CREATE DATABASE peersync ;
+
+DROP DATABASE peersync ;
 use peersync ;
 
 CREATE TABLE `roles` (
