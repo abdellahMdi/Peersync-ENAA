@@ -55,19 +55,14 @@ function getAllRequests()
     }
 
 
-function creatNewRequest(){
+function creatNewRequest($learner_id,$title,$description,$skill_id,$date_pub){
     try{
         $conn = DB::connect();
-        $sql = " INSERT INTO help_requests (title, description, date_pub, date_session, learner_id, tutor_id, skill_id, status_id)
-                                    VALUES (:title, :description, :date_pub, :date_session, :learner_id, :tutor_id, :skill_id, 1)
-    ";
-        $stmt = $this->pdo->prepare("
-        INSERT INTO help_requests (title, description, date_pub, date_session, learner_id, tutor_id, skill_id, status_id)
-        VALUES (:title, :description, :date_pub, :date_session, :learner_id, :tutor_id, :skill_id, 
-                (SELECT id FROM status WHERE status = :status))
-    ");
+        $sql = "INSERT INTO help_requests (title, description, date_pub, date_session, learner_id, tutor_id, skill_id, status_id)
+                VALUES (:title, :description, :date_pub, :date_session, :learner_id, :tutor_id, :skill_id, "")";
+        $stmt = $conn->prepare($sql);
 
-    return $stmt->execute([
+     $stmt->execute([
         ':title'        => $request->getTitle(),
         ':description'  => $request->getDescription(),
         ':date_pub'     => $request->getDatePub()->format('Y-m-d H:i:s'),
