@@ -27,16 +27,13 @@ class HelpRequest
         $this->id          = $id;
     }
     // ── Getters ──────────────────────────────────────────────
-
     public function getId(): ?int           { return $this->id; }
     public function getTitle(): string      { return $this->title; }
     public function getDescription(): string { return $this->description; }
     public function getDatePub(): DateTime  { return $this->datePub; }
     public function getDateSession(): ?DateTime { return $this->dateSession; }
     public function getStatus(): string      { return $this->status; }
-
     // ── Setters ──────────────────────────────────────────────
-
     public function setId(int $id): void    { $this->id = $id; }
     public function setTitle(string $title): void { $this->title = $title; }
     public function setDescription(string $desc): void { $this->description = $desc; }

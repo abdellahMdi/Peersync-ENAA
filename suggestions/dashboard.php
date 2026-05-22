@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__."/../Repositories/HelpRequestRepository.php"
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -162,14 +163,7 @@ session_start();
 
   <div class="space-y-4">
     <?php
-    $demo = [
-      ['id'=>1,'titre'=>'Problème avec PDO et les transactions','description'=>'Je n\'arrive pas à faire un rollback correctement quand une de mes requêtes SQL échoue dans ma boucle foreach.','techno'=>'PHP','statut'=>'EN_ATTENTE','etudiant'=>'Khalid M.','id_student'=>10, 'date_creation'=>'Aujourd\'hui, à 14:32'],
-      ['id'=>2,'titre'=>'Comprendre les jointures SQL','description'=>'Besoin d\'explications claires sur la différence entre un LEFT JOIN et un INNER JOIN avec des exemples concrets de tables.','techno'=>'SQL','statut'=>'ASSIGNE','etudiant'=>'Sara B.','id_student'=>11, 'date_creation'=>'Hier, à 11:15'],
-      ['id'=>3,'titre'=>'Callback vs Promise en JS','description'=>'Bloqué sur l\'asynchronisme en JS. Je mélange les anciennes syntaxes de callbacks et les nouvelles promesses/async-await.','techno'=>'JavaScript','statut'=>'EN_ATTENTE','etudiant'=>'Amine L.','id_student'=>12, 'date_creation'=>'Le 18 Mai, à 17:40'],
-      ['id'=>4,'titre'=>'Héritage POO — méthodes abstraites','description'=>'Pourquoi utiliser une classe abstraite plutôt qu\'une interface en PHP ? Des exemples d\'application requis.','techno'=>'PHP','statut'=>'RESOLUE','etudiant'=>'Fatima Z.','id_student'=>13, 'date_creation'=>'Le 15 Mai, à 09:22'],
-      ['id'=>5,'titre'=>'Flexbox vs Grid CSS','description'=>'Quand est-il préférable d\'utiliser CSS Grid plutôt que Flexbox pour créer un layout de dashboard complexe ?','techno'=>'CSS','statut'=>'EN_ATTENTE','etudiant'=>'Karim D.','id_student'=>14, 'date_creation'=>'Le 14 Mai, à 16:05'],
-    ];
-    $tickets = $tickets ?? $demo;
+    $tickets = getAllRequests();
     foreach ($tickets as $t):
       $statusClass = match($t['statut']) {
         'EN_ATTENTE' => 'badge-wait', 'ASSIGNE' => 'badge-assign', default => 'badge-done'
@@ -179,18 +173,18 @@ session_start();
       };
     ?>
     <div class="card ticket-card rounded-xl p-5 cursor-pointer transition-all duration-150"
-         onclick="window.location='request_detail.php?id=<?= $t['id'] ?>'">
+         onclick="window.location='request_detail.php?id=<?= $t->getId() ?>'">
       
       <div class="flex items-start justify-between gap-4">
         <div class="space-y-2 flex-1">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="mono text-xs" style="color:#4a4d60;">#<?= $t['id'] ?></span>
-            <span class="skill-tag" onclick="event.stopPropagation()"><?= htmlspecialchars($t['techno']) ?></span>
+            <span class="mono text-xs" style="color:#4a4d60;">#<?=  $t->getId()  ?></span>
+            <span class="skill-tag" onclick="event.stopPropagation()"><?= $t->skill->getName() ?></span>
             <span class="<?= $statusClass ?> text-xs font-medium px-2.5 py-0.5 rounded-full" onclick="event.stopPropagation()"><?= $statusLabel ?></span>
             <span class="text-xs ml-2" style="color:#6b6e85;">
-              Posté par <strong class="text-gray-300"><?= htmlspecialchars($t['etudiant']) ?></strong> 
+              Posté par <strong class="text-gray-300"><?= $t->learner->getName() ?></strong> 
               <span class="mx-1.5" style="color:#4a4d60;">•</span> 
-              <span class="mono text-gray-400"><?= htmlspecialchars($t['date_creation'] ?? 'Date inconnue') ?></span>
+              <span class="mono text-gray-400"><?= $t->getDatePub() ?? 'Date inconnue' ?></span>
             </span>
           </div>
           
@@ -202,7 +196,7 @@ session_start();
         </div>
 
         <div class="flex flex-col items-end justify-between h-full min-w-[140px] self-stretch pt-1">
-          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['id'] ?? 0) !== ($t['id_student'] ?? -1)): ?>
+          <?php if ($t['statut'] === 'EN_ATTENTE' && ($_SESSION['user_id'] ?? 0) !== ($t['id_student'] ?? -1)): ?>
           <form action="../scripts/assign_process.php" method="POST" onclick="event.stopPropagation()">
             <input type="hidden" name="ticket_id" value="<?= $t['id'] ?>"/>
             <button type="submit" class="text-xs px-3 py-2 rounded-xl font-semibold btn-primary text-white shadow-md flex items-center gap-1.5">
